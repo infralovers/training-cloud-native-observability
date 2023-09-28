@@ -1,0 +1,14 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: simpleingressroutfrontend
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`frontend.<ENV-NAME>-<ENV-USER-ID>-01.<ENV-ANIMAL>.<ENV-DOMAIN>`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: my-otel-demo-frontendproxy
+          port: 8080
