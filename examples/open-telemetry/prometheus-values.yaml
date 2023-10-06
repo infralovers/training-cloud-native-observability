@@ -1,0 +1,14 @@
+components:
+  frontend:
+    resources:
+      limits:
+        memory: 500Mi
+
+jaeger:
+  enabled: false
+
+prometheus:
+  enabled: false
+
+grafana:
+  enabled: false

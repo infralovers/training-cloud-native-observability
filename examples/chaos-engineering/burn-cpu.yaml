@@ -1,0 +1,17 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: StressChaos
+metadata:
+  namespace: default
+  name: burn-cpu-100
+spec:
+  selector:
+    namespaces:
+      - default
+    labelSelectors:
+      app.kubernetes.io/instance: my-otel-demo
+  mode: all
+  stressors:
+    cpu:
+      workers: 1
+      load: 100
+  duration: 30s

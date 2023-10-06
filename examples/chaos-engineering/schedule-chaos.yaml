@@ -1,0 +1,21 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: Schedule
+metadata:
+  namespace: chaos-testing
+  name: scheduled-pod-failure
+spec:
+  schedule: 5 * * * *
+  startingDeadlineSeconds: null
+  concurrencyPolicy: Forbid
+  historyLimit: 2
+  type: PodChaos
+  podChaos:
+    selector:
+      namespaces:
+        - default
+      labelSelectors:
+        app.kubernetes.io/component: cartservice
+    mode: one
+    action: pod-failure
+    duration: 1h
+    gracePeriod: 0

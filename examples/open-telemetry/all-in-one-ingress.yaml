@@ -9,7 +9,7 @@ spec:
     - match: Host(`prom.<ENV-NAME>-<ENV-USER-ID>-01.<ENV-ANIMAL>.<ENV-DOMAIN>`) && PathPrefix(`/`)
       kind: Rule
       services:
-        - name: prometheus-kube-prometheus-prometheus
+        - name: my-otel-demo-prometheus-server
           port: 9090
 ---
 apiVersion: traefik.containo.us/v1alpha1
@@ -51,5 +51,19 @@ spec:
     - match: Host(`grafana.<ENV-NAME>-<ENV-USER-ID>-01.<ENV-ANIMAL>.<ENV-DOMAIN>`) && PathPrefix(`/`)
       kind: Rule
       services:
-        - name: prometheus-grafana
+        - name: my-otel-demo-grafana
           port: 80
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: simpleingressroutloadgenerator
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`loadgenerator.<ENV-NAME>-<ENV-USER-ID>-01.<ENV-ANIMAL>.<ENV-DOMAIN>`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: my-otel-demo-loadgenerator
+          port: 8089

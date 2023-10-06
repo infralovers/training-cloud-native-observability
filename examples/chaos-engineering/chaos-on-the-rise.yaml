@@ -1,0 +1,39 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: Workflow
+metadata:
+  name: chaos-on-the-rise
+  namespace: default
+spec:
+  entry: entry
+  templates:
+    - name: entry
+      templateType: Serial
+      children:
+        - stress-test
+        - pod-killer
+      deadline: 2m
+    - name: stress-test
+      templateType: StressChaos
+      deadline: 10s
+      stressChaos:
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app.kubernetes.io/component: paymentservice
+        mode: all
+        stressors:
+          cpu:
+            load: 100
+            workers: 1
+    - name: pod-killer
+      templateType: PodChaos
+      podChaos:
+        action: pod-kill
+        selector:
+          namespaces:
+            - default
+          labelSelectors:
+            app.kubernetes.io/component: cartservice
+        mode: all
+        duration: 60s
