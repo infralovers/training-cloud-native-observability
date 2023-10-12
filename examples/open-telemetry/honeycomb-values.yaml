@@ -1,0 +1,41 @@
+components:
+  frontend:
+    resources:
+      limits:
+        memory: 500Mi
+
+opentelemetry-collector:
+  config:
+    exporters:
+      otlp:
+        endpoint: "https://api.honeycomb.io:443"
+        headers:
+          "x-honeycomb-team": <your-api-key>
+      otlp/metrics:
+        endpoint: "https://api.honeycomb.io:443"
+        headers:
+          "x-honeycomb-team": <your-api-key>
+          "x-honeycomb-dataset": "Metrics"
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [otlp]
+        metrics:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [otlp/metrics]
+        logs:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [otlp]
+
+prometheus:
+  enabled: false
+
+jaeger:
+  enabled: false
+
+grafana:
+  enabled: false
