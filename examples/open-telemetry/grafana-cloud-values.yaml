@@ -1,6 +1,4 @@
 components:
-  loadgenerator:
-    enabled: false
   frontend:
     resources:
       limits:
@@ -9,11 +7,24 @@ components:
 opentelemetry-collector:
   config:
     exporters:
-      ## Create an exporter to Tempo using the standard `otlp` export format
       otlp:
         endpoint: 'grafana-k8s-monitoring-grafana-agent.default.svc.cluster.local:4317'
         tls:
           insecure: true
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [otlp, spanmetrics]
+        metrics:
+          receivers: [otlp, spanmetrics]
+          processors: [batch]
+          exporters: [otlp]
+        logs:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [otlp]
 
 prometheus:
   enabled: false
