@@ -4,9 +4,8 @@ kind: Ingress
 metadata:
   name: traefik-ingress
   namespace: kube-system
-  annotations:
-    kubernetes.io/ingress.class: traefik
 spec:
+  ingressClassName: traefik
   rules:
     - host: traefik.<ENV-NAME>-<ENV-USER-ID>-01.<ENV-ANIMAL>.<ENV-DOMAIN>
       http:
