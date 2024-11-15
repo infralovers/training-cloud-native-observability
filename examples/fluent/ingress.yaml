@@ -1,0 +1,14 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: kibana-ingress
+  namespace: observability
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`kibana.cno-01-01.fox.infralovers.academy`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: kibana-kibana 
+          port: 5601
